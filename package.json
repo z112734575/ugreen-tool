@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
     "copy-to-clipboard": "^3.3.3",
     "element-plus": "^2.3.5",
     "sortablejs": "^1.15.0",

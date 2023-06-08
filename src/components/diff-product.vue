@@ -17,7 +17,13 @@
       <el-table-column :label="`列${item}`" width="180"
                        v-for="(item,index) in columns" style="cursor: move!important;"
                        class-name="sortable-item"
-                       :column-key="new Date().toDateString()" :render-header="()=>{return `列${item+1}`}">
+                       :column-key="new Date().toDateString()">
+        <template #header>
+          <div style="display: flex;justify-content: space-between">
+            <div>列{{ item + 1 }}</div>
+            <div style="width: 24px;height: 24px;border-radius: 50%; border: 1px solid black;display: flex;justify-content: center;align-items: center;cursor: pointer" @click="deleteColumn">X</div>
+          </div>
+        </template>
         <template #default="scope">
           <!--          <el-input v-model="scope.row[`row_name`]" placeholder="请输入对比标题" v-if="index===1"></el-input>-->
           <el-input v-model="scope.row.row_data[index]" :placeholder="`请输入内容${item+1}`"></el-input>
@@ -36,6 +42,14 @@
 import copy from 'copy-to-clipboard';
 import Sortable from "sortablejs";
 import {sortBy, findIndex} from 'lodash'
+import {
+  Check,
+  Delete,
+  Edit,
+  Message,
+  Search,
+  Star,
+} from '@element-plus/icons-vue'
 
 
 const tableData = [
@@ -44,6 +58,7 @@ const tableData = [
     row_data: []
   }
 ]
+const Delete2 = Delete
 export default {
   name: 'diff-product',
   mounted() {
@@ -86,6 +101,12 @@ export default {
     },
     addColumn() {
       this.columns.push(this.columns.length)
+    },
+    deleteColumn(index) {
+      this.columns.splice(index, 1)
+      this.tableData.forEach(item => {
+        item.row_data.splice(index, 1)
+      })
     },
     deleteRow(index) {
       this.tableData.splice(index, 1)
